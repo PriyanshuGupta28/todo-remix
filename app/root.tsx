@@ -58,12 +58,12 @@ export default function App() {
         style={{ minHeight: "100vh" }}
       >
         <Outlet />
-        <button
+        {/* <button
           onClick={toggleTheme}
           className="absolute top-4 right-4 px-4 py-2 bg-gray-700 text-white rounded-lg shadow-md hover:bg-gray-600"
         >
           Toggle Theme
-        </button>
+        </button> */}
       </div>
     </Theme>
   );
