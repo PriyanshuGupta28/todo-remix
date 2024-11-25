@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Table, Button, TextField, Flex } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useFetcher } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
+import { useFetcher, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { authCookie } from "~/auth/auth";
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,9 +36,16 @@ const initialData: User[] = [
   },
 ];
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const cookieString = await request.headers.get("Cookie");
+  const userId = await authCookie.parse(cookieString);
+  return { userId };
+};
+
 export default function Index() {
   const [users, setUsers] = useState(initialData);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const { userId } = useLoaderData<typeof loader>();
 
   const handleAddSubmit = (newUser: Omit<User, "id">) => {
     const id = users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1;
