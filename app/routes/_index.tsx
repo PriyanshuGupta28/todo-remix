@@ -39,6 +39,7 @@ const initialData: User[] = [
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const cookieString = await request.headers.get("Cookie");
   const userId = await authCookie.parse(cookieString);
+  console.log(userId);
   return { userId };
 };
 
@@ -46,6 +47,7 @@ export default function Index() {
   const [users, setUsers] = useState(initialData);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { userId } = useLoaderData<typeof loader>();
+  console.log(userId, "userId");
 
   const handleAddSubmit = (newUser: Omit<User, "id">) => {
     const id = users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1;
