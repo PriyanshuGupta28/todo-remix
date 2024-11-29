@@ -2,6 +2,7 @@ import { createCookie } from "@remix-run/node";
 import { User } from "~/models/user";
 
 export const authCookie = createCookie("authCookie", {
+  httpOnly: true,
   secure: true,
   sameSite: "lax",
   path: "/",
@@ -18,13 +19,11 @@ export const createUserAccount = async (email: string, password: string) => {
       throw new Error("Email already registered.");
     }
 
-    // Create a new user document
     const newUser = new User({
       email,
-      password, // Store password as plain text (not recommended for production)
+      password,
     });
 
-    // Save the new user to the database
     const savedUser = await newUser.save();
 
     return savedUser;
